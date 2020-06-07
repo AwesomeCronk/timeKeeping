@@ -1,41 +1,8 @@
-from threading import Timer
-
-class clock():
-    def __init__(self, frequency, timeoutEvent, limit = None):  # timeout in seconds
-        self.time = 1 / frequency
-        self.event = timeoutEvent
-        self.count = 0
-        self.limit = limit
-        self.timer = Timer(self.time, self.timeout)
-        self.timer.start()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, exc_traceback):
-        self.timer.cancel()
-
-    def timeout(self):
-        if not self.limit is None:
-            self.count += 1
-            print('incrementing clock')
-            if self.count >= self.limit:
-                self.stop()
-        self.reset()
-        self.event()
-
-    def reset(self):
-        self.timer.cancel()
-        self.timer = Timer(self.time, self.timeout)
-        self.timer.start()
-
-    def stop(self):
-        print('stopping timer')
-        self.timer.cancel()
+from clock import clock
 
 def event():
-    print('timer event with count {}'.format(t.count))
+    print('clock event with count {}'.format(t.count))
 
-with clock(0.5, event, 5) as t:
-    print('timer running')
-    input('waiting for input. will exit after input is given.')
+with clock(1, event, 5) as t:       #clock(frequency, event, count)     frequency is in hertz. event is any function with no paramaters. count is how many iterations to undergo. if count is None than cycle indefinitely.
+    print('clock running')
+    input('waiting for input. will exit after input is given.\n')       #hang the main thread in order to see the clock events

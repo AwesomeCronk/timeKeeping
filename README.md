@@ -1,0 +1,1 @@
+This is a basic clock module written in Python. See test.py for usage.
